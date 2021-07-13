@@ -7,7 +7,7 @@
      <div class="buttonAdd">
        <button v-on:click="showClick">Add new Coast +</button>
      </div>
-     <AddPayment v-show='isShow' v-on:addNewPayment="addData"/>
+     <AddPayment v-show='isShow'/>
      <br>
      <PaymentsDisplay :list="paymentsList" :pages="pages"/>
      <Pagination @paginationClick="changeList" :listLength="paymentsList.length"/>
@@ -20,6 +20,7 @@
 import PaymentsDisplay from './components/PaymentsDisplay.vue'
 import AddPayment from "./components/AddPayment.vue"
 import Pagination from "./components/Pagination.vue"
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'App',
@@ -35,83 +36,42 @@ export default {
     pages:1,
   }),
   methods:{
-        changeList(data){
-        console.log(data)
+    ...mapMutations([
+      'setPaymentsListData'
+    ]),
+    changeList(data){
         this.pages=data;
       },
     showClick(){
       this.isShow=!this.isShow
     },
-    addData(data){
-      this.paymentsList.push(data)
-    },
-    fetchData(){
-      return[
-        {
-          date:'28.03.2020',
-          category:'Food',
-          value:169
-        },
-        {
-          date:'28.03.2021',
-          category:'Sport',
-          value:400
-        },
-        {
-          date:'28.05.2020',
-          category:'Internet',
-          value:200
-        },
-                {
-          date:'28.03.2020',
-          category:'Food',
-          value:169
-        },
-        {
-          date:'28.03.2021',
-          category:'Sport',
-          value:400
-        },
-        {
-          date:'28.05.2020',
-          category:'Internet',
-          value:200
-        },
-                {
-          date:'28.03.2020',
-          category:'Food',
-          value:169
-        },
-        {
-          date:'28.03.2021',
-          category:'Sport',
-          value:400
-        },
-        {
-          date:'28.05.2020',
-          category:'Internet',
-          value:200
-        },
-                {
-          date:'28.03.2020',
-          category:'Food',
-          value:169
-        },
-        {
-          date:'28.03.2021',
-          category:'Sport',
-          value:400
-        },
-        {
-          date:'28.05.2020',
-          category:'Internet',
-          value:200
-        },
-      ]
-    },
+    // addData(data){
+    //   this.paymentsList.push(data)
+    // },
+    // fetchData(){
+    //   return[
+    //     {
+    //       date:'28.03.2020',
+    //       category:'Food',
+    //       value:169
+    //     },
+    //     {
+    //       date:'28.03.2021',
+    //       category:'Sport',
+    //       value:400
+    //     },
+    //     {
+    //       date:'28.05.2020',
+    //       category:'Internet',
+    //       value:200
+    //   ]
+    // },
   },
       created(){
-      this.paymentsList= this.fetchData()
+      // this.paymentsList= this.fetchData()
+      // this.$store.commit('setPaymentsListData',this.fetchData())
+      // this.setPaymentsListData(this.fetchData())
+      // this.$store.dispatch('fetchData')
     }
 }
 </script>

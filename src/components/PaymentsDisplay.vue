@@ -13,10 +13,12 @@
               <span class="value">{{item.value}}</span> 
              {{pages}}
        </div>
+       Total: {{getFPV}}
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name:"PaymentsDisplay",
     props:{
@@ -30,17 +32,36 @@ export default {
     },
     data(){
       return{
+        storeList:[],
         filterList:[],
       }
     },
-    methods:{
-  
+    methods:{      
+    },
+    computed:{
+      
+      ...mapGetters([
+        'getPaymentsList',
+        'getFullPaymentValue'
+      ]),
+      
+      getFPV(){
+        return this.getFullPaymentValue
+      },
+      getList(){
+        return this.getPaymentsList
+      }
     },
     created(){
-      this.filterList=this.list.slice(0,5);
+     this.$store.dispatch('fetchData')
+    },
+    updated(){
+ 
     },
     beforeUpdate(){
-        this.filterList=this.list.slice((this.pages-1)*5,this.pages*5);
+      this.storeList= this.getList
+        // this.filterList= this.storeList.slice(0,5)
+        this.filterList=this.storeList.slice((this.pages-1)*5,this.pages*5);
     }
     
 }
