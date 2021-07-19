@@ -6,12 +6,11 @@
       <span class="category">Category</span>
       <span class="value">Value</span> 
       </div>
-       <div class="payments" v-for="(item,idx) in filterList" :key="idx">
-              <span class="order_number">{{idx+1}}</span>
+       <div class="payments" v-for="(item,idx) in list" :key="idx">
+              <span class="order_number">{{item.id}}</span>
               <span class="date">{{item.date}}</span>
               <span class="category">{{item.category}}</span>
               <span class="value">{{item.value}}</span> 
-             {{pages}}
        </div>
        Total: {{getFPV}}
   </div>
@@ -26,9 +25,6 @@ export default {
         type:Array,
         default:()=>[]
       },
-      pages:{
-        type:Number
-      }
     },
     data(){
       return{
@@ -59,9 +55,9 @@ export default {
  
     },
     beforeUpdate(){
-      this.storeList= this.getList
-        // this.filterList= this.storeList.slice(0,5)
-        this.filterList=this.storeList.slice((this.pages-1)*5,this.pages*5);
+      // this.storeList= this.getList
+      //   // this.filterList= this.storeList.slice(0,5)
+      //   this.filterList=this.storeList.slice((this.pages-1)*5,this.pages*5);
     }
     
 }

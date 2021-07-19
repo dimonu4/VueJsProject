@@ -39,7 +39,8 @@ export default new Vuex.Store({
                         items.push({
                             date:"29.02.2020",
                             category:"Sport",
-                            value: i
+                            value: i,
+                            id:i
                         })
                     }
                     resolve(items)
@@ -51,7 +52,7 @@ export default new Vuex.Store({
         loadCategories({commit}){
             return new Promise((resolve)=>{
                 setTimeout(()=>{
-                    resolve(['Food','Transport','Education','Sport'])
+                    resolve(['Food','Transport','Education','Sport','Entertaiment'])
                 },1000)
             })
             .then(res=>{
