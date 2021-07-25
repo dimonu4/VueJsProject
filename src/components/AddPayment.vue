@@ -8,8 +8,7 @@
           </option>
       </select>
       <input v-model.number="value" type="number" placeholder="value"/>
-      <button @click="onClick" v-bind:disabled="value===''">Add Data</button>
-      lastId:{{lastId}}
+      <button @click="onClick" v-bind:disabled="value===''">Save</button>
   </div>
 </template>
 
@@ -18,34 +17,38 @@ import {mapActions,mapGetters,mapMutations} from 'vuex'
 export default {
     name:"AddPayment",
     props:{
-        lastId:{
-            type:Array
-        }
     },
     data(){
         return{
             date:"",
             category:"",
             value:null,
+            id:Number
         }
     },
     methods:{
         ...mapMutations([
-            'setDataToPaymentsList'
+            'setDataToPaymentsList',
+            'removeDataPaymentsList'
         ]),
           ...mapActions([
             'loadCategories'
         ]),
         onClick(){
-            const{category,value}= this
-            
+            const{category,value,id}= this
             const data= {
                 date: this.date||this.getCurrentDate,
                 category,
                 value,
+                id,
             }
             // this.$emit('addNewPayment',data)
-            this.setDataToPaymentsList(data)
+            if(this.$attrs.item){
+            this.setDataToPaymentsList({id:this.$attrs.item.item.id,data:data})
+            }else{
+                this.setDataToPaymentsList(data)
+            }
+            this.$emit('updated')
         }
     },
     computed:{
@@ -68,13 +71,18 @@ export default {
         }
     },
     mounted(){
-        // console.log(this.lastId[this.lastId.length-1].id)
+        console.log()
         this.category=this.$route.params.category;
         this.value= +this.$route.query.value;
         if(!this.getCategoryList.length){
             this.loadCategories()
         }
-    }
+        if(this.$attrs.item){
+            this.category=this.$attrs.item.item.category;
+            this.value=this.$attrs.item.item.value;
+            this.date=this.$attrs.item.item.date;
+        }
+    },
 }
 </script>
 

@@ -13,14 +13,29 @@ export default new Vuex.Store({
             state.paymentsList= payload;
         },
         setDataToPaymentsList(state,payload){
-            state.paymentsList.push(payload)
+            
+            if(payload.id){
+                // let index= state.paymentsList.indexOf(payload.data)
+                payload.data.id=payload.id
+                state.paymentsList[payload.id-1]=payload.data
+                
+            }else{
+                state.paymentsList.push(payload)
+            }
+        },
+        removeDataPaymentsList(state,payload){
+            let index=state.paymentsList.indexOf(payload)
+            if(index!=-1){
+            state.paymentsList=[...state.paymentsList.slice(0,index),...state.paymentsList.slice(index+1)]
+            }
         },
         SetCategories(state,payload){
             if(!Array.isArray(payload)){
                 payload=[payload]
             }
             state.categoryList.push(...payload)
-        }
+        },
+
     },
     getters:{
         getPaymentsList:state=>state.paymentsList,

@@ -14,7 +14,10 @@
    <!-- <Dashboard v-if="page==='dashboard'"/>
    <About v-else-if="page==='about'"/>
    <Page404 v-else /> -->
-   <router-view/>
+   <router-view />
+   <transition name="fade">
+   <modal-window  :settings="modalSettings" v-if="modalSettings.name"/>
+   </transition>
    <main>
      <div class="buttonAdd">
        <button v-on:click="showClick">Add new Coast +</button>
@@ -37,6 +40,7 @@ import Pagination from "./components/Pagination.vue"
 // import Page404 from "./views/Page404.vue"
 import {mapMutations} from 'vuex'
 import {mapGetters} from 'vuex'
+// import ModalWindow from './components/ModalWindow.vue'
 
 export default {
   name: 'App',
@@ -44,6 +48,7 @@ export default {
     PaymentsDisplay,
     AddPayment,
     Pagination,
+    ModalWindow:()=>import(/*webpackChunkName:'ModalWindow'*/'./components/ModalWindow.vue'),
     // Dashboard,
     // About,
     // Page404,
@@ -55,6 +60,10 @@ export default {
     page:'',
     curPage:1,
     n:5,
+    modalShown:false,
+    elements:[],
+    modalSettings:{
+    },
   }),
   methods:{
     // setPage(){
@@ -63,6 +72,12 @@ export default {
     // setPage(){
     //   this.page=location.pathname.slice(1)
     // },
+    onShown(settings){
+      this.modalSettings=settings;
+    },
+    onHide(){
+      this.modalSettings={};
+    },
     ...mapMutations([
       'setPaymentsListData'
     ]),
@@ -72,38 +87,20 @@ export default {
     showClick(){
       this.isShow=!this.isShow
     },
-    // addData(data){
-    //   this.paymentsList.push(data)
-    // },
-    // fetchData(){
-    //   return[
-    //     {
-    //       date:'28.03.2020',
-    //       category:'Food',
-    //       value:169
-    //     },
-    //     {
-    //       date:'28.03.2021',
-    //       category:'Sport',
-    //       value:400
-    //     },
-    //     {
-    //       date:'28.05.2020',
-    //       category:'Internet',
-    //       value:200
-    //   ]
-    // },
   },
   computed:{
     ...mapGetters([
       'getPaymentsList'
     ]),
     currentElements(){
-      const{n,curPage}=this
+          const{n,curPage}=this
+      // console.log('currentElements done')
       return this.getPaymentsList.slice(n*(curPage-1),n*(curPage-1)+n)
     }
   },
   mounted(){
+    this.$modal.EventBus.$on('show',this.onShown);
+    this.$modal.EventBus.$on('hide',this.onHide)
     const page=this.$route.params.page||1
     this.curPage=Number(page)
     //  this.setPage();
@@ -121,12 +118,22 @@ export default {
     // })
     //  window.addEventListener('popstate',this.setPage)
   },
-  created(){
+  beforedestroy(){
+    this.$modal.EventBus.$off('shown',this.onShown);
+    this.$modal.EventBus.$off('hide',this.onHide)
+  },
+  // created(){
     // this.$router.push({name:'dashboard'})
       // this.paymentsList= this.fetchData()
       // this.$store.commit('setPaymentsListData',this.fetchData())
       // this.setPaymentsListData(this.fetchData())
       // this.$store.dispatch('fetchData')
+    // },
+    created(){
+      const{n,curPage}=this
+      // console.log('currentElements done')
+      this.elements= this.getPaymentsList.slice(n*(curPage-1),n*(curPage-1)+n)
+      
     }
 }
 </script>
@@ -144,8 +151,15 @@ export default {
   width:800px;
   margin:0 auto;
 }
+
 </style>
 <style>
+.fade-enter-active,.fade-leave-active{
+  transition:opacity 3s;
+}
+.fade-enter,.fade-leave-to{
+  opacity:0;
+}
 .addtemplate{
   display:block;
 }
