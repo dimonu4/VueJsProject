@@ -1,11 +1,18 @@
 <template>
-    <div>
+  <div class="text-center">
+    <v-pagination
+      v-model="cur"
+      :length="amount"
+      :total-visible="7"
+    ></v-pagination>
+  </div>
+    <!-- <div>
         <span @click="clicked(cur-1)">&#60;</span>
         <span @click='clicked(n)' v-for="n in amount" :key="n">
         {{n}}
         </span>
         <span @click="clicked(cur+1)">&#62;</span>
-    </div>
+    </div> -->
 </template>
 
 <script>
@@ -35,9 +42,6 @@ export default {
         amount(){
             return Math.ceil(this.listLength/this.n)
         }
-    //     ...mapGetters([
-    //         'getPaymentsList'
-    //     ])
     }
 }
 </script>

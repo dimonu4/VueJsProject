@@ -18,8 +18,8 @@ export default new Vuex.Store({
                 // let index= state.paymentsList.indexOf(payload.data)
                 payload.data.id=payload.id
                 state.paymentsList[payload.id-1]=payload.data
-                
             }else{
+                payload.id=state.paymentsList.length+1
                 state.paymentsList.push(payload)
             }
         },

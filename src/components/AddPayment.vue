@@ -1,15 +1,10 @@
 <template>
-  <div class="buttonAdd input">
-      <input v-model="date" placeholder="date"/>
-      <!-- <input v-model.trim="category" placeholder="category"/> -->
-      <select class="category" v-model="category">
-          <option v-for="(option,idx) in getCategoryList" :key='idx' :value="option">
-              {{option}}
-          </option>
-      </select>
-      <input v-model.number="value" type="number" placeholder="value"/>
-      <button @click="onClick" v-bind:disabled="value===''">Save</button>
-  </div>
+<v-container>
+<v-text-field v-model="date" label="Date"></v-text-field>
+<v-select v-model="category" label="Category" :items="getCategoryList"></v-select>
+<v-text-field v-model.number="value" type="number" label="Value"></v-text-field>
+<v-btn @click="onClick">Save</v-btn>
+</v-container>
 </template>
 
 <script>
@@ -23,7 +18,7 @@ export default {
             date:"",
             category:"",
             value:null,
-            id:Number
+            id:null,
         }
     },
     methods:{
@@ -44,11 +39,14 @@ export default {
             }
             // this.$emit('addNewPayment',data)
             if(this.$attrs.item){
+                
             this.setDataToPaymentsList({id:this.$attrs.item.item.id,data:data})
             }else{
                 this.setDataToPaymentsList(data)
+                this.$emit('updated')
             }
-            this.$emit('updated')
+            
+            
         }
     },
     computed:{
@@ -71,7 +69,6 @@ export default {
         }
     },
     mounted(){
-        console.log()
         this.category=this.$route.params.category;
         this.value= +this.$route.query.value;
         if(!this.getCategoryList.length){

@@ -1,21 +1,20 @@
 <template>
-  <div class="payments-list" >
-    <div class="payments payments_header">
-      <span class="order_number">#</span>
-      <span class="date">Date</span>
-      <span class="category">Category</span>
-      <span class="value">Value</span> 
-      </div>
-       <div class="payments" v-for="(item,idx) in list" :key="idx">
-              <span class="order_number">{{item.id}}</span>
-              <span class="date">{{item.date}}</span>
-              <span class="category">{{item.category}}</span>
-              <span class="value">{{item.value}}</span> 
-              <span @click="contextMenuClick(item)">...</span>
-       </div>
-       <modal-window-context-menu @updated2='update' :settings="contextSettings" v-if="menuClicked"/>
-       Total: {{getFPV}}
-  </div>
+<v-container>
+  <v-row>
+    <v-col cols="1">#</v-col>
+    <v-col cols="4">Date</v-col>
+    <v-col cols="4">Category</v-col>
+    <v-col cols="2">Value</v-col>
+  </v-row>
+  <v-row v-for="(item,idx) in list" :key="idx">
+    <v-col cols="1">{{item.id}}</v-col>
+    <v-col cols="4">{{item.date}}</v-col>
+    <v-col cols="4">{{item.category}}</v-col>
+    <v-col cols="2">{{item.value}}</v-col>
+    <v-col cols="1" @click="contextMenuClick(item)"><v-icon>mdi-dots-vertical</v-icon></v-col>
+    <modal-window-context-menu @updated2='update' :settings="contextSettings" v-if="menuClicked"/>
+  </v-row>
+</v-container>
 </template>
 
 <script>
@@ -47,7 +46,7 @@ export default {
       },
       contextMenuClick(item){
         this.menuClicked=!this.menuClicked;
-        console.log(event)
+        
         this.$menu.show("ContextMenu",{item,coordinateX:event.pageX,coordinateY:event.pageY})
       },
       onShown(settings){
@@ -69,10 +68,10 @@ export default {
         return this.getPaymentsList
       }
     },
-    created(){
+    // created(){
       
-     this.$store.dispatch('fetchData')
-    },
+    //  this.$store.dispatch('fetchData')
+    // },
     mounted(){
       this.$menu.EventBus.$on('show',this.onShown)
       this.$menu.EventBus.$on('hide',this.onHide)
@@ -94,20 +93,5 @@ export default {
 </script>
 
 <style scoped>
-.payments span{
-  display:inline-block;
-  margin: 0.5em;
-}
-.order_number{
-  width: 20px;
-}
-.date{
-  width: 100px;
-}
-.category{
-  width:150px;
-}
-.value{
-width:50px;
-}
+
 </style>

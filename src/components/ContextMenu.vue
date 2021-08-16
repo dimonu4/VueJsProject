@@ -1,8 +1,12 @@
 <template>
-  <div class="wrapper  ">
+<v-container>
+    <v-btn @click="editClick" class="mr-8">Edit</v-btn>
+    <v-btn @click="removeClick">Remove</v-btn>
+</v-container>
+  <!-- <div class="wrapper  ">
       <div class="edit" @click="editClick">edit</div>
       <div class="remove" @click="removeClick">remove</div>
-  </div>
+  </div> -->
 </template>
 
 <script>

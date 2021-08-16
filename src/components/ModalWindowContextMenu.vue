@@ -25,7 +25,7 @@ export default {
         },
          calc(){
             this.left= `${this.settings.coordinateX}px`;
-            this.top= `${this.settings.coordinateY}px`;
+            this.top= `${this.settings.coordinateY-50}px`;
         },
     },
     components:{
@@ -41,7 +41,6 @@ export default {
 .modalmenu{
     position:absolute;
     
-    background:green;
-    width:20%;
-    }
+    background:teal;
+     }
 </style>
